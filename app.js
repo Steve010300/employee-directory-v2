@@ -1,4 +1,6 @@
 import express from "express";
+import employeesRouter from "#api/employees";
+
 const app = express();
 export default app;
 
@@ -31,4 +33,20 @@ app.get("/employees/:id", (req, res) => {
   }
 
   res.send(employee);
+});
+
+app.use(express.json());
+
+
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
+
+app.use("/employees", employeesRouter);
+
+
+app.use((err, req, res, next) => {
+  res.status(500).send("Sorry! Something went wrong :(");
 });
